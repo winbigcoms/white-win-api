@@ -1,5 +1,3 @@
-from types.excel import RequestCompareExcel
-
 def compare_selected_rows_columns(df1, df2, start_row, end_row, columns_to_compare):
     # 선택한 행과 열만 추출
     df1_subset = df1.iloc[start_row:end_row, :][columns_to_compare]
