@@ -1,24 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import sqlite3
-import json
 from pathlib import Path
 
 app = FastAPI()
-
-db_path = path("data/data.db")
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS items (
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    description TEXT
-)
-""")
-conn.commit()
-
-json_file_path = Path("data/data.json")
 
 app.add_middleware(
     CORSMiddleware,
