@@ -8,8 +8,15 @@ from routes import (
 
 app = FastAPI()
 
+allow_origin = [
+  "http://localhost:3000",
+  "http://localhost:8000",
+  "https://www.white-win.dev"
+]
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=allow_origin,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
