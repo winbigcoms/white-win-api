@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
+from routes import (
+    utill,
+    default
+)
 
 app = FastAPI()
 
@@ -11,10 +15,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, query_param: str = None):
-    return {"item_id": item_id, "query_param": query_param}
+app.include_router(utill.router)
+app.include_router(default.router)

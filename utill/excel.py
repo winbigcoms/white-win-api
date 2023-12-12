@@ -1,14 +1,26 @@
-def compare_selected_rows_columns(df1, df2, start_row, end_row, columns_to_compare):
-    # 선택한 행과 열만 추출
-    df1_subset = df1.iloc[start_row:end_row, :][columns_to_compare]
-    df2_subset = df2.iloc[start_row:end_row, :][columns_to_compare]
+from fastapi import UploadFile 
+import pandas as pd
+import subprocess
 
-    # 두 데이터프레임 비교
-    diff_df = df1_subset.compare(df2_subset)
+async def find_different_values(file1:UploadFile, file2:UploadFile ):
+    file1_path = f"uploaded_files/{file1.filename}"
+    file2_path = f"uploaded_files/{file2.filename}"
 
-    # 차이가 있는 경우 JSON 형태로 반환
-    if not diff_df.empty:
-        return diff_df.to_json(orient='split')
-    else:
-        return {"message": "선택한 행과 열에서의 두 시트는 동일합니다."}
+    with open(file1_path, "wb") as file_object:
+        file_object.write(file1.file.read())
+
+    with open(file2_path, "wb") as file_object:
+        file_object.write(file2.file.read())
+
+    # 엑셀 파일 읽기
+    df1 = pd.read_excel(file1_path, header=None)
+    df2 = pd.read_excel(file2_path, header=None)
     
+    # 이름을 기준으로 두 데이터프레임을 병합
+    merged_df = pd.merge(df1, df2, left_on=0, right_on=0,suffixes=('_left','_right'))
+    
+    different_values_df = merged_df[merged_df['1_left'] != merged_df['1_right']]
+    subprocess.run(["rm",file1_path])
+    subprocess.run(["rm",file2_path])
+
+    return different_values_df
