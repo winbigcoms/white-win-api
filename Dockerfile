@@ -5,5 +5,3 @@ WORKDIR /white-win-api
 COPY . /white-win-api
 
 RUN pip3 install -r requirements.txt
-
-CMD [ "python", "app.py" ]
