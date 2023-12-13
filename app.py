@@ -1,10 +1,18 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+import uvicorn
+from dotenv import load_dotenv
 from pathlib import Path
 from routes import (
     utill,
     default
 )
+
+load_dotenv('.env')
+ppem = os.environ.get('ppem')
+fpem = os.environ.get('fpem')
 
 app = FastAPI()
 
@@ -16,6 +24,7 @@ allow_origin = [
 
 app.add_middleware(
     CORSMiddleware,
+    HTTPSRedirectMiddleware,
     allow_origins=allow_origin,
     allow_credentials=True,
     allow_methods=["*"],
@@ -24,3 +33,12 @@ app.add_middleware(
 
 app.include_router(utill.router)
 app.include_router(default.router)
+
+if __name__ == "__main__":
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=8000,
+        ssl_keyfile="/etc/letsencrypt/live/168.138.52.179.nip.io/privkey.pem",
+        ssl_certfile="/etc/letsencrypt/live/168.138.52.179.nip.io/fullchain.pem",
+    )
