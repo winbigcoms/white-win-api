@@ -22,9 +22,10 @@ allow_origin = [
   "https://www.white-win.dev"
 ]
 
+app.add_middleware(HTTPSRedirectMiddleware)
+
 app.add_middleware(
     CORSMiddleware,
-    HTTPSRedirectMiddleware,
     allow_origins=allow_origin,
     allow_credentials=True,
     allow_methods=["*"],
