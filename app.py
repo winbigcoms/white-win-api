@@ -1,13 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 from pathlib import Path
 from routes import (
     utill,
     default
 )
-
-load_dotenv('.env')
 
 app = FastAPI()
 
