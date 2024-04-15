@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from routes import (
     utill,
-    default
+    default,
+    withyou
 )
 
 app = FastAPI()
@@ -23,4 +24,5 @@ app.add_middleware(
 )
 
 app.include_router(utill.router)
+app.include_router(withyou.router)
 app.include_router(default.router)
