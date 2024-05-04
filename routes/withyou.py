@@ -49,8 +49,8 @@ async def post_event(eventData:EventData):
     event_collection_name.insert_one(dict(eventData))
     return true
 
-@router.post('/event-img')
-async def upload_imgs(path,files: List[UploadFile]):
+@router.post('/event-imgs')
+async def upload_imgs(files: List[UploadFile]):
     for img in files:
         try:
             contents = img.file.read()
