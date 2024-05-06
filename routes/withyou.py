@@ -1,11 +1,11 @@
-from fastapi import APIRouter,UploadFile,File,HTTPException
+from fastapi import APIRouter,UploadFile,File,HTTPException,Form
 from model.withyou import EventData
 from schema.promise import list_serial,indivisual_serial
 from schema.user import indivisual_user_serial
 from schema.event import event_list_serial,indivisual_event_serial
 from config.db import promise_collection_name,user_collection_name,event_collection_name
 from bson import ObjectId
-from utill.s3 import s3 
+from utill.s3 import s3,upload_to_s3 
 from typing import List
 
 router = APIRouter(prefix="/withyou", tags=["withyou"])
@@ -50,15 +50,11 @@ async def post_event(eventData:EventData):
     return true
 
 @router.post('/event-imgs')
-async def upload_imgs(files: List[UploadFile]):
-    for img in files:
-        try:
-            contents = img.file.read()
-            img.file.seek(0)
-            res = s3.upload_file(
-                path,
-                'with-you',
-                img,
-                ExtraArgs={'ContentType': 'image/jpeg'}
-            )
+async def upload_imgs(files: List[UploadFile], uploader:str = Form(...)):
+    s3_urls = []
+    for file in files:
+        s3_url = upload_to_s3(file,uploader)
+        s3_urls.append(s3_url)
+    return {"s3_urls": s3_urls}
+
 
