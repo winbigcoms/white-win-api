@@ -19,3 +19,4 @@ email
 event - \_id - user_id - date
 
 promise(withyou) - eventId
+nohup uvicorn app:app --host 0.0.0.0 --port 8000

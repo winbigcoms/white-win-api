@@ -7,3 +7,4 @@ openpyxl
 pymongo
 pydantic
 python-dotenv
+boto3
