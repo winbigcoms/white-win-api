@@ -14,3 +14,8 @@ class PromiseData(BaseModel):
     isVisited: str
     tag: str
     date: str
+
+class PostImg(BaseModel):
+    base64: str
+    fileName: str
+    imageType: str

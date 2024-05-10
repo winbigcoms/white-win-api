@@ -1,6 +1,7 @@
 import os
 import boto3
 from dotenv import load_dotenv
+from model.withyou import PostImg
 from fastapi import UploadFile
 import requests
 from io import BytesIO
@@ -16,15 +17,11 @@ s3 = boto3.client(
     aws_secret_access_key = aws_secret_access_key
 )
 
-def upload_to_s3(file:UploadFile, uploader:str):
+def upload_to_s3(file:PostImg, uploader:str):
     filename = file.filename
-    response = requests.get(file.uri)
-    if response.status_code != 200:
-        raise HTTPException(status_code=400, detail="Failed to download image from URI")
-
-    image_data = BytesIO(response.content)
+    imageDate = base64.b64decode(file.base64)
     s3.upload_fileobj(
-        image_data,
+        BytesIO(imageDate),
         'with-you',
         f"{uploader}/{file.filename}",
     )
