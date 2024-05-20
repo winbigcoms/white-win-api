@@ -5,6 +5,7 @@ from model.withyou import PostImg
 from fastapi import UploadFile
 import requests
 from io import BytesIO
+from botocore.exceptions import NoCredentialsError
 
 load_dotenv()
 
@@ -16,6 +17,19 @@ s3 = boto3.client(
     aws_access_key_id = aws_access_key_id,
     aws_secret_access_key = aws_secret_access_key
 )
+
+def make_presign_url(uploader):
+    try:
+        response = s3.generate_presigned_url('put_object',
+                                            Params={
+                                                'Bucket': "with-you",
+                                                'Key': f"with-you/{uploader}"},
+                                            ExpiresIn=3600)
+    except NoCredentialsError:
+        print("no cred")
+        return None
+
+    return response
 
 def upload_to_s3(file:PostImg, uploader:str):
     filename = file.filename

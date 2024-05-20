@@ -5,7 +5,7 @@ from schema.user import indivisual_user_serial
 from schema.event import event_list_serial,indivisual_event_serial
 from config.db import promise_collection_name,user_collection_name,event_collection_name
 from bson import ObjectId
-from utill.s3 import s3,upload_to_s3 
+from utill.s3 import s3,upload_to_s3,make_presign_url
 from typing import List
 
 router = APIRouter(prefix="/withyou", tags=["withyou"])
@@ -48,6 +48,11 @@ async def get_promise(
 async def post_event(eventData:EventData):
     event_collection_name.insert_one(dict(eventData))
     return true
+
+@router.get("/event/img/pre-url")
+async def get_presign_url(uploader:str):
+    url = make_presign_url(uploader)
+    return url
 
 @router.post('/event-imgs')
 async def upload_imgs(files: List[PostImg] = File(...), uploader:str = Form(...)):
