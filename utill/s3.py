@@ -6,16 +6,24 @@ from fastapi import UploadFile
 import requests
 from io import BytesIO
 from botocore.exceptions import NoCredentialsError
+from botocore.config import Config
 
 load_dotenv()
 
 aws_access_key_id = os.getenv('aws_access_key_id')
 aws_secret_access_key = os.getenv('aws_secret_access_key')
 
+my_config = Config(
+    region_name='ap-northeast-2',
+    signature_version='s3v4'
+)
+
+
 s3 = boto3.client(
     "s3",
     aws_access_key_id = aws_access_key_id,
-    aws_secret_access_key = aws_secret_access_key
+    aws_secret_access_key = aws_secret_access_key,
+    config = my_config
 )
 
 def make_presign_url(uploader):
