@@ -11,7 +11,7 @@ class PromiseData(BaseModel):
     memo: str
     imgs: list
     link:str
-    isVisited: str
+    isVisited: bool
     tag: str
     date: str
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter,UploadFile,File,HTTPException,Form
-from model.withyou import EventData,PostImg
+from model.withyou import EventData,PostImg,PromiseData
 from schema.promise import list_serial,indivisual_serial
 from schema.user import indivisual_user_serial
 from schema.event import event_list_serial,indivisual_event_serial
@@ -43,23 +43,19 @@ async def get_promise(
         "event_id":event_id
     }))
     return promises
+@router.post("/promise")
+async def post_promise(promiseData:PromiseData):
+    print(promiseData)
+    promise_collection_name.insert_one(dict(promiseData))
+    return True
 
 @router.post("/event")
 async def post_event(eventData:EventData):
     event_collection_name.insert_one(dict(eventData))
-    return true
+    return True
 
 @router.get("/event/img/pre-url")
 async def get_presign_url(uploader:str):
     url = make_presign_url(uploader)
     return url
-
-@router.post('/event-imgs')
-async def upload_imgs(files: List[PostImg] = File(...), uploader:str = Form(...)):
-    s3_urls = []
-    for file in files:
-        s3_url = upload_to_s3(file,uploader)
-        s3_urls.append(s3_url)
-    return {"s3_urls": s3_urls}
-
 
