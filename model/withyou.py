@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import List
 class EventData(BaseModel):
     event_title: str
     date: str
@@ -9,7 +9,7 @@ class EventData(BaseModel):
 class PromiseData(BaseModel):
     title: str
     memo: str
-    imgs: list
+    imgs: List[str]
     link:str
     isVisited: bool
     tag: str

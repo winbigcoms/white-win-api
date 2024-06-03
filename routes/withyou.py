@@ -22,7 +22,7 @@ async def login(
 
 @router.get("/event/{id}")
 async def get_event(id:str):
-    print(id)
+
     event = indivisual_event_serial(event_collection_name.find_one({
         "_id":ObjectId(id)
     }))
@@ -35,7 +35,7 @@ async def get_events(owner:str):
     }))
     return events
 
-@router.get("/promise")
+@router.get("/promises")
 async def get_promise(
     event_id:str
 ):
@@ -43,9 +43,19 @@ async def get_promise(
         "event_id":event_id
     }))
     return promises
+
+@router.get("/promise/{id}")
+async def get_promise(
+    id:str
+):
+    promise = indivisual_serial(promise_collection_name.find_one({
+        "_id":ObjectId(id)
+    }))
+    return promise
+
 @router.post("/promise")
 async def post_promise(promiseData:PromiseData):
-    print(promiseData)
+
     promise_collection_name.insert_one(dict(promiseData))
     return True
 
