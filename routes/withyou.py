@@ -59,6 +59,15 @@ async def post_promise(promiseData:PromiseData):
     promise_collection_name.insert_one(dict(promiseData))
     return True
 
+@router.patch("/promise/visit")
+async def patch_promise_visit(promiseId:string):
+
+    promise_collection_name.update_one({
+        "_id":ObjectId(promiseId),
+        "isVisited":True
+    })
+    return True
+
 @router.post("/event")
 async def post_event(eventData:EventData):
     event_collection_name.insert_one(dict(eventData))
