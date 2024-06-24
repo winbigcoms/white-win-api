@@ -60,7 +60,7 @@ async def post_promise(promiseData:PromiseData):
     return True
 
 @router.patch("/promise/visit")
-async def patch_promise_visit(promiseId:string):
+async def patch_promise_visit(promiseId:str):
 
     promise_collection_name.update_one({
         "_id":ObjectId(promiseId),
